@@ -5,9 +5,8 @@ import br.com.fiap.SafeZone.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -15,32 +14,39 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public Page<Usuario> listarFiltrado(String cidade, String regiao, String role, Pageable pageable) {
-        if (cidade != null && regiao != null && role != null)
-            return usuarioRepository.findByLocalizacaoCidadeAndLocalizacaoRegiaoAndRoleIgnoreCase(cidade, regiao, role, pageable);
-        if (cidade != null && role != null)
-            return usuarioRepository.findByLocalizacaoCidadeAndRoleIgnoreCase(cidade, role, pageable);
-        if (regiao != null && role != null)
-            return usuarioRepository.findByLocalizacaoRegiaoAndRoleIgnoreCase(regiao, role, pageable);
-        if (cidade != null)
-            return usuarioRepository.findByLocalizacaoCidadeIgnoreCase(cidade, pageable);
-        if (regiao != null)
-            return usuarioRepository.findByLocalizacaoRegiaoIgnoreCase(regiao, pageable);
-        if (role != null)
-            return usuarioRepository.findByRoleIgnoreCase(role, pageable);
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-        return usuarioRepository.findAll(pageable);
+    public Page<Usuario> listarFiltrado(String cidade, String regiao, String role, Pageable pageable) {
+        Page<Usuario> usuarios;
+
+        if (role != null)
+            usuarios = usuarioRepository.findByRoleIgnoreCase(role, pageable);
+        else
+            usuarios = usuarioRepository.findAll(pageable);
+
+        return usuarios; // agora retorna diretamente a entidade
     }
 
-    public Optional<Usuario> buscarPorId(Long id) {
-        return usuarioRepository.findById(id);
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     public Usuario buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email);
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null) throw new RuntimeException("Usuário não encontrado");
+        return usuario;
     }
 
     public Usuario salvar(Usuario usuario) {
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        return usuarioRepository.save(usuario);
+    }
+
+    public Usuario atualizar(Long id, Usuario usuario) {
+        usuario.setId(id);
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 

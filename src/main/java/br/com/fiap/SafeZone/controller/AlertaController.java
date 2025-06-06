@@ -17,16 +17,15 @@ public class AlertaController {
     @Autowired
     private AlertaService alertaService;
 
-    @Operation(summary = "Listar todos os alertas", description = "Retorna uma lista paginada de todos os alertas registrados")
+    @Operation(summary = "Listar alertas com filtros", description = "Retorna uma lista paginada de alertas com filtros opcionais por cidade, região e nível")
     @GetMapping
-    public Page<Alerta> listarTodos(Pageable pageable) {
-        return alertaService.listarTodos(pageable);
-    }
-
-    @Operation(summary = "Buscar alertas por região", description = "Filtra alertas com base na região definida na localização")
-    @GetMapping("/regiao")
-    public Page<Alerta> buscarPorRegiao(@RequestParam String regiao, Pageable pageable) {
-        return alertaService.buscarPorRegiao(regiao, pageable);
+    public Page<Alerta> listarFiltrado(
+            @RequestParam(required = false) String cidade,
+            @RequestParam(required = false) String regiao,
+            @RequestParam(required = false) String nivel,
+            Pageable pageable
+    ) {
+        return alertaService.listarFiltrado(cidade, regiao, nivel, pageable);
     }
 
     @Operation(summary = "Buscar alerta por ID", description = "Retorna os dados de um alerta específico pelo ID")

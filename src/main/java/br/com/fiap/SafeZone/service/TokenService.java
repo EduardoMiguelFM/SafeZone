@@ -23,9 +23,14 @@ public class TokenService {
     }
 
     public String validateToken(String token) {
-        return JWT.require(Algorithm.HMAC256(secret))
-                .build()
-                .verify(token)
-                .getSubject();
+        try {
+            return JWT.require(Algorithm.HMAC256(secret))
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (Exception e) {
+            System.out.println("Token inválido: " + e.getMessage());
+            return null;
+        }
     }
 }

@@ -18,7 +18,7 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String user_name;
+    private String nome;
 
     @Column(unique = true)
     private String email;
@@ -30,13 +30,24 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private Localizacao localizacao;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Alerta> alertas = new ArrayList<>();
 
-    // Autenticação com Spring Security
+    public Usuario() {}
+
+    public Usuario(Long id, String nome, String email, String senha, String telefone, List<Alerta> alertas, UserRole role) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.telefone = telefone;
+        this.alertas = alertas;
+        this.role = role;
+    }
+
+    // Spring Security
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (UserRole.ADMIN.equals(this.role)) {
@@ -44,9 +55,8 @@ public class Usuario implements UserDetails {
                     new SimpleGrantedAuthority("ROLE_ADMIN"),
                     new SimpleGrantedAuthority("ROLE_USER")
             );
-        } else {
-            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -59,102 +69,31 @@ public class Usuario implements UserDetails {
         return email;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public Usuario() {}
-
-    public Usuario(Long id, String user_name, String email, String senha, String telefone, Localizacao localizacao, List<Alerta> alertas, UserRole role) {
-        this.id = id;
-        this.user_name = user_name;
-        this.email = email;
-        this.senha = senha;
-        this.telefone = telefone;
-        this.localizacao = localizacao;
-        this.alertas = alertas;
-        this.role = role;
-    }
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 
     // Getters e Setters
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getUser_name() {
-        return user_name;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
-    }
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public List<Alerta> getAlertas() { return alertas; }
+    public void setAlertas(List<Alerta> alertas) { this.alertas = alertas; }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public Localizacao getLocalizacao() {
-        return localizacao;
-    }
-
-    public void setLocalizacao(Localizacao localizacao) {
-        this.localizacao = localizacao;
-    }
-
-    public List<Alerta> getAlertas() {
-        return alertas;
-    }
-
-    public void setAlertas(List<Alerta> alertas) {
-        this.alertas = alertas;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
+    public UserRole getRole() { return role; }
+    public void setRole(UserRole role) { this.role = role; }
 }

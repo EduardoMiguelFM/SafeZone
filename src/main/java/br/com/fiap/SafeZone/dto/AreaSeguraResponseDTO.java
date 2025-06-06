@@ -1,6 +1,7 @@
 package br.com.fiap.SafeZone.dto;
 
-public class AreaSeguraDTO {
+public class AreaSeguraResponseDTO {
+
     private Long id;
     private String nome;
     private String tipo;
@@ -10,7 +11,7 @@ public class AreaSeguraDTO {
     private Integer capacidade;
     private Long localizacaoId;
 
-
+    // Getters e Setters
 
     public Long getId() {
         return id;

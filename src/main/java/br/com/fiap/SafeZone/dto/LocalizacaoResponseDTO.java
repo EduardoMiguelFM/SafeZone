@@ -1,13 +1,17 @@
 package br.com.fiap.SafeZone.dto;
 
-
 public class LocalizacaoResponseDTO {
+
     private Long id;
     private String regiao;
     private String cidade;
     private String estado;
     private String coordenadas;
 
+    // Construtor vazio
+    public LocalizacaoResponseDTO() {}
+
+    // Getters e Setters
     public Long getId() {
         return id;
     }

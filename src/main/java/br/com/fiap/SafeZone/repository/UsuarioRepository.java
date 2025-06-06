@@ -11,9 +11,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Usuario findByEmail(String email);
 
     Page<Usuario> findByRoleIgnoreCase(String role, Pageable pageable);
-    Page<Usuario> findByLocalizacaoCidadeIgnoreCase(String cidade, Pageable pageable);
-    Page<Usuario> findByLocalizacaoRegiaoIgnoreCase(String regiao, Pageable pageable);
-    Page<Usuario> findByLocalizacaoCidadeAndRoleIgnoreCase(String cidade, String role, Pageable pageable);
-    Page<Usuario> findByLocalizacaoRegiaoAndRoleIgnoreCase(String regiao, String role, Pageable pageable);
-    Page<Usuario> findByLocalizacaoCidadeAndLocalizacaoRegiaoAndRoleIgnoreCase(String cidade, String regiao, String role, Pageable pageable);
 }

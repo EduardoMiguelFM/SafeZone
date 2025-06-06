@@ -1,11 +1,16 @@
 package br.com.fiap.SafeZone.dto;
 
 public class LocalizacaoRequestDTO {
+
     private String regiao;
     private String cidade;
     private String estado;
     private String coordenadas;
 
+    // Construtor vazio
+    public LocalizacaoRequestDTO() {}
+
+    // Getters e Setters
     public String getRegiao() {
         return regiao;
     }

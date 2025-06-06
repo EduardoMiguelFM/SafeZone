@@ -2,7 +2,7 @@ package br.com.fiap.SafeZone.controller;
 
 import br.com.fiap.SafeZone.dto.AuthDTO;
 import br.com.fiap.SafeZone.dto.LoginResponseDTO;
-import br.com.fiap.SafeZone.dto.RegisterDTO;
+import br.com.fiap.SafeZone.dto.AuthRegisterDTO;
 import br.com.fiap.SafeZone.model.Usuario;
 import br.com.fiap.SafeZone.repository.UsuarioRepository;
 import br.com.fiap.SafeZone.service.TokenService;
@@ -47,7 +47,7 @@ public class AuthController {
 
     @Operation(summary = "Registrar novo usuário", description = "Cadastra um novo usuário com senha criptografada e retorna token JWT")
     @PostMapping("/register")
-    public LoginResponseDTO register(@RequestBody @Valid RegisterDTO dados) {
+    public LoginResponseDTO register(@RequestBody @Valid AuthRegisterDTO dados) {
         if (usuarioRepository.findByEmail(dados.login()) != null) {
             throw new RuntimeException("Usuário já cadastrado");
         }

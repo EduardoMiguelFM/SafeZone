@@ -14,19 +14,14 @@ public class Localizacao {
     private String estado;
     private String coordenadas;
 
-    @OneToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
-
     public Localizacao() {}
 
-    public Localizacao(Long id, String regiao, String cidade, String estado, String coordenadas, Usuario usuario) {
+    public Localizacao(Long id, String regiao, String cidade, String estado, String coordenadas) {
         this.id = id;
         this.regiao = regiao;
         this.cidade = cidade;
         this.estado = estado;
         this.coordenadas = coordenadas;
-        this.usuario = usuario;
     }
 
     // Getters e Setters
@@ -69,13 +64,5 @@ public class Localizacao {
 
     public void setCoordenadas(String coordenadas) {
         this.coordenadas = coordenadas;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 }

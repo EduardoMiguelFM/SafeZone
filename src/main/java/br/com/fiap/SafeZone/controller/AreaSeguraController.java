@@ -1,6 +1,7 @@
 package br.com.fiap.SafeZone.controller;
 
-import br.com.fiap.SafeZone.model.AreaSegura;
+import br.com.fiap.SafeZone.dto.AreaSeguraRequestDTO;
+import br.com.fiap.SafeZone.dto.AreaSeguraResponseDTO;
 import br.com.fiap.SafeZone.service.AreaSeguraService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +20,7 @@ public class AreaSeguraController {
 
     @Operation(summary = "Listar áreas seguras", description = "Lista todas as áreas seguras com filtros opcionais por cidade, estado e tipo")
     @GetMapping
-    public Page<AreaSegura> listar(
+    public Page<AreaSeguraResponseDTO> listar(
             @RequestParam(required = false) String cidade,
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) String tipo,
@@ -30,14 +31,14 @@ public class AreaSeguraController {
 
     @Operation(summary = "Buscar área segura por ID", description = "Retorna os dados de uma área segura pelo ID")
     @GetMapping("/{id}")
-    public AreaSegura buscar(@PathVariable Long id) {
-        return service.buscar(id);
+    public AreaSeguraResponseDTO buscar(@PathVariable Long id) {
+        return service.buscarDTO(id);
     }
 
     @Operation(summary = "Cadastrar nova área segura", description = "Registra uma nova área segura no sistema")
     @PostMapping
-    public AreaSegura salvar(@RequestBody AreaSegura area) {
-        return service.salvar(area);
+    public AreaSeguraResponseDTO salvar(@RequestBody AreaSeguraRequestDTO dto) {
+        return service.salvarDTO(dto);
     }
 
     @Operation(summary = "Excluir área segura", description = "Remove uma área segura existente pelo ID")

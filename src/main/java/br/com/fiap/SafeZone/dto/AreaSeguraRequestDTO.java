@@ -1,30 +1,16 @@
-package br.com.fiap.SafeZone.model;
+package br.com.fiap.SafeZone.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-public class AreaSegura {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AreaSeguraRequestDTO {
 
     private String nome;
-    private String tipo;          // Ex: Abrigo, Escola, Hospital
+    private String tipo;
     private String endereco;
+    private String cidade;
+    private String estado;
     private Integer capacidade;
+    private Long localizacaoId;
 
-    @ManyToOne
-    @JoinColumn(name = "localizacao_id")
-    private Localizacao localizacao;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Getters e Setters
 
     public String getNome() {
         return nome;
@@ -50,6 +36,22 @@ public class AreaSegura {
         this.endereco = endereco;
     }
 
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public Integer getCapacidade() {
         return capacidade;
     }
@@ -58,11 +60,11 @@ public class AreaSegura {
         this.capacidade = capacidade;
     }
 
-    public Localizacao getLocalizacao() {
-        return localizacao;
+    public Long getLocalizacaoId() {
+        return localizacaoId;
     }
 
-    public void setLocalizacao(Localizacao localizacao) {
-        this.localizacao = localizacao;
+    public void setLocalizacaoId(Long localizacaoId) {
+        this.localizacaoId = localizacaoId;
     }
 }
