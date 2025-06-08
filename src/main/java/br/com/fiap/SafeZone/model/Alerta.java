@@ -1,7 +1,9 @@
 package br.com.fiap.SafeZone.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,84 +24,43 @@ public class Alerta {
 
     private LocalDateTime dataOcorrencia;
 
+    private Double temperatura;
+    private String condicaoClimatica;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @JsonIgnore
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "localizacao_id")
     private Localizacao localizacao;
 
-    // Construtores
-
-    public Alerta() {}
-
-    public Alerta(Long id, TipoDesastre tipoDesastre, String descricao, NivelAlerta nivel,
-                  LocalDateTime dataOcorrencia, Usuario usuario, Localizacao localizacao) {
-        this.id = id;
-        this.tipoDesastre = tipoDesastre;
-        this.descricao = descricao;
-        this.nivel = nivel;
-        this.dataOcorrencia = dataOcorrencia;
-        this.usuario = usuario;
-        this.localizacao = localizacao;
-    }
-
     // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public TipoDesastre getTipoDesastre() { return tipoDesastre; }
+    public void setTipoDesastre(TipoDesastre tipoDesastre) { this.tipoDesastre = tipoDesastre; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public TipoDesastre getTipoDesastre() {
-        return tipoDesastre;
-    }
+    public NivelAlerta getNivel() { return nivel; }
+    public void setNivel(NivelAlerta nivel) { this.nivel = nivel; }
 
-    public void setTipoDesastre(TipoDesastre tipoDesastre) {
-        this.tipoDesastre = tipoDesastre;
-    }
+    public LocalDateTime getDataOcorrencia() { return dataOcorrencia; }
+    public void setDataOcorrencia(LocalDateTime dataOcorrencia) { this.dataOcorrencia = dataOcorrencia; }
 
-    public String getDescricao() {
-        return descricao;
-    }
+    public Double getTemperatura() { return temperatura; }
+    public void setTemperatura(Double temperatura) { this.temperatura = temperatura; }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+    public String getCondicaoClimatica() { return condicaoClimatica; }
+    public void setCondicaoClimatica(String condicaoClimatica) { this.condicaoClimatica = condicaoClimatica; }
 
-    public NivelAlerta getNivel() {
-        return nivel;
-    }
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
-    public void setNivel(NivelAlerta nivel) {
-        this.nivel = nivel;
-    }
-
-    public LocalDateTime getDataOcorrencia() {
-        return dataOcorrencia;
-    }
-
-    public void setDataOcorrencia(LocalDateTime dataOcorrencia) {
-        this.dataOcorrencia = dataOcorrencia;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Localizacao getLocalizacao() {
-        return localizacao;
-    }
-
-    public void setLocalizacao(Localizacao localizacao) {
-        this.localizacao = localizacao;
-    }
+    public Localizacao getLocalizacao() { return localizacao; }
+    public void setLocalizacao(Localizacao localizacao) { this.localizacao = localizacao; }
 }

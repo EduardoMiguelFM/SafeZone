@@ -33,7 +33,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 	// ModelMapper
-	implementation 'org.modelmapper:modelmapper:3.1.1'
+	implementation 'org.modelmapper:modelmapper:3.2.0'
 
 	// PostgreSQL Driver
 	runtimeOnly 'org.postgresql:postgresql:42.7.2'

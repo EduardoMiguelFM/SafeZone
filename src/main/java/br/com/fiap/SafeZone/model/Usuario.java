@@ -20,16 +20,16 @@ public class Usuario implements UserDetails {
 
     private String nome;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String senha;
 
     private String telefone;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -59,23 +59,14 @@ public class Usuario implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    @Override
-    public String getPassword() {
-        return senha;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
+    @Override public String getPassword() { return senha; }
+    @Override public String getUsername() { return email; }
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return true; }
 
     // Getters e Setters
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

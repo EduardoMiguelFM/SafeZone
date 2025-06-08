@@ -4,6 +4,7 @@ public class LocalizacaoResponseDTO {
 
     private Long id;
     private String regiao;
+    private String endereco;
     private String cidade;
     private String estado;
     private String coordenadas;
@@ -50,5 +51,13 @@ public class LocalizacaoResponseDTO {
 
     public void setCoordenadas(String coordenadas) {
         this.coordenadas = coordenadas;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 }

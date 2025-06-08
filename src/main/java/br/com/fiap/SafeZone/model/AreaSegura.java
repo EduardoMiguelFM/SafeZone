@@ -10,59 +10,42 @@ public class AreaSegura {
     private Long id;
 
     private String nome;
-    private String tipo;          // Ex: Abrigo, Escola, Hospital
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoAbrigo tipo;
+
     private String endereco;
+    private String responsavel;
+    private String telefone;
     private Integer capacidade;
 
     @ManyToOne
     @JoinColumn(name = "localizacao_id")
     private Localizacao localizacao;
 
-    public Long getId() {
-        return id;
-    }
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getNome() {
-        return nome;
-    }
+    public TipoAbrigo getTipo() { return tipo; }
+    public void setTipo(TipoAbrigo tipo) { this.tipo = tipo; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public String getEndereco() { return endereco; }
+    public void setEndereco(String endereco) { this.endereco = endereco; }
 
-    public String getTipo() {
-        return tipo;
-    }
+    public String getResponsavel() { return responsavel; }
+    public void setResponsavel(String responsavel) { this.responsavel = responsavel; }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    public String getEndereco() {
-        return endereco;
-    }
+    public Integer getCapacidade() { return capacidade; }
+    public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public Integer getCapacidade() {
-        return capacidade;
-    }
-
-    public void setCapacidade(Integer capacidade) {
-        this.capacidade = capacidade;
-    }
-
-    public Localizacao getLocalizacao() {
-        return localizacao;
-    }
-
-    public void setLocalizacao(Localizacao localizacao) {
-        this.localizacao = localizacao;
-    }
+    public Localizacao getLocalizacao() { return localizacao; }
+    public void setLocalizacao(Localizacao localizacao) { this.localizacao = localizacao; }
 }

@@ -31,17 +31,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         String token = recuperarToken(request);
 
-        if (token != null) {
+        if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             String email = tokenService.validateToken(token);
 
-
-            if (email != null) {
+            if (email != null && !email.isEmpty()) {
                 UserDetails userDetails = usuarioRepository.findByEmail(email);
 
                 if (userDetails != null) {
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
+                    var authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }

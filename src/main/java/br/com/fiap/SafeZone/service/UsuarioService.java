@@ -1,5 +1,6 @@
 package br.com.fiap.SafeZone.service;
 
+import br.com.fiap.SafeZone.dto.UsuarioResponseDTO;
 import br.com.fiap.SafeZone.model.Usuario;
 import br.com.fiap.SafeZone.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +18,18 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Page<Usuario> listarFiltrado(String cidade, String regiao, String role, Pageable pageable) {
-        Page<Usuario> usuarios;
+    public Page<UsuarioResponseDTO> listarTodos(Pageable pageable) {
+        return usuarioRepository.findAll(pageable)
+                .map(this::toResponseDTO);
+    }
 
-        if (role != null)
-            usuarios = usuarioRepository.findByRoleIgnoreCase(role, pageable);
-        else
-            usuarios = usuarioRepository.findAll(pageable);
-
-        return usuarios; // agora retorna diretamente a entidade
+    private UsuarioResponseDTO toResponseDTO(Usuario usuario) {
+        UsuarioResponseDTO dto = new UsuarioResponseDTO();
+        dto.setId(usuario.getId());
+        dto.setNome(usuario.getNome());
+        dto.setEmail(usuario.getEmail());
+        dto.setTelefone(usuario.getTelefone());
+        return dto;
     }
 
     public Usuario buscarPorId(Long id) {
@@ -53,4 +57,17 @@ public class UsuarioService {
     public void deletar(Long id) {
         usuarioRepository.deleteById(id);
     }
+
+    public Page<UsuarioResponseDTO> listarPorNome(String nome, Pageable pageable) {
+        Page<Usuario> page;
+
+        if (nome != null && !nome.isBlank()) {
+            page = usuarioRepository.findByNomeContainingIgnoreCase(nome, pageable);
+        } else {
+            page = usuarioRepository.findAll(pageable);
+        }
+
+        return page.map(this::toResponseDTO);
+    }
+
 }

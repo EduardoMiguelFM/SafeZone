@@ -9,6 +9,8 @@ public class AlertaResponseDTO {
     private String nivel;
     private String regiao;
     private LocalDateTime dataOcorrencia;
+    private Double temperatura;
+    private String condicaoClimatica;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -27,4 +29,10 @@ public class AlertaResponseDTO {
 
     public LocalDateTime getDataOcorrencia() { return dataOcorrencia; }
     public void setDataOcorrencia(LocalDateTime dataOcorrencia) { this.dataOcorrencia = dataOcorrencia; }
+
+    public Double getTemperatura() { return temperatura; }
+    public void setTemperatura(Double temperatura) { this.temperatura = temperatura; }
+
+    public String getCondicaoClimatica() { return condicaoClimatica; }
+    public void setCondicaoClimatica(String condicaoClimatica) { this.condicaoClimatica = condicaoClimatica; }
 }

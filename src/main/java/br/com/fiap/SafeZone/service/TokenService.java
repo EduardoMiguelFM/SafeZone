@@ -3,10 +3,14 @@ package br.com.fiap.SafeZone.service;
 import br.com.fiap.SafeZone.model.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
@@ -15,22 +19,36 @@ public class TokenService {
     private String secret;
 
     public String generateToken(Usuario usuario) {
-        return JWT.create()
-                .withSubject(usuario.getUsername())
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 86400000)) // 1 dia
-                .sign(Algorithm.HMAC256(secret));
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.create()
+                    .withIssuer("safezone-api")
+                    .withSubject(usuario.getEmail())
+                    .withClaim("id", usuario.getId())
+                    .withClaim("role", usuario.getRole().name())
+                    .withExpiresAt(generateExpiration())
+                    .sign(algorithm);
+        } catch (JWTCreationException e) {
+            throw new RuntimeException("Erro ao gerar token JWT", e);
+        }
     }
 
     public String validateToken(String token) {
         try {
-            return JWT.require(Algorithm.HMAC256(secret))
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("safezone-api")
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (Exception e) {
-            System.out.println("Token inválido: " + e.getMessage());
+        } catch (JWTVerificationException e) {
             return null;
         }
+    }
+
+    private Instant generateExpiration() {
+        return LocalDateTime.now()
+                .plusHours(1)
+                .toInstant(ZoneOffset.of("-03:00"));
     }
 }

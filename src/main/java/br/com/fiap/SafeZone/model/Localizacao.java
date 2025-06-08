@@ -10,15 +10,17 @@ public class Localizacao {
     private Long id;
 
     private String regiao;
+    private String endereco;
     private String cidade;
     private String estado;
     private String coordenadas;
 
     public Localizacao() {}
 
-    public Localizacao(Long id, String regiao, String cidade, String estado, String coordenadas) {
+    public Localizacao(Long id, String regiao,String endereco, String cidade, String estado, String coordenadas) {
         this.id = id;
         this.regiao = regiao;
+        this.endereco = endereco;
         this.cidade = cidade;
         this.estado = estado;
         this.coordenadas = coordenadas;
@@ -60,6 +62,14 @@ public class Localizacao {
 
     public String getCoordenadas() {
         return coordenadas;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public void setCoordenadas(String coordenadas) {

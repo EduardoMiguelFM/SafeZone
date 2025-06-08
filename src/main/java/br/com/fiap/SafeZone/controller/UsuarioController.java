@@ -6,6 +6,7 @@ import br.com.fiap.SafeZone.model.UserRole;
 import br.com.fiap.SafeZone.model.Usuario;
 import br.com.fiap.SafeZone.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,15 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Operation(summary = "Listar usuários com filtro por nome", description = "Busca usuários pelo nome (parcial), com suporte a paginação")
+    @GetMapping("/filtro")
+    public Page<UsuarioResponseDTO> listarPorNome(
+            @RequestParam(required = false) String nome,
+            @Parameter(hidden = true) Pageable pageable
+    ) {
+        return usuarioService.listarPorNome(nome, pageable);
+    }
 
 
     @Operation(summary = "Buscar usuário por ID", description = "Retorna um usuário específico pelo ID")
@@ -58,22 +68,22 @@ public class UsuarioController {
         usuarioService.deletar(id);
     }
 
-    // Conversão manual de DTO → Entidade
     private Usuario toEntity(UsuarioRequestDTO dto) {
         Usuario usuario = new Usuario();
+        usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
+        usuario.setTelefone(dto.getTelefone());
         usuario.setSenha(dto.getSenha());
-        usuario.setRole(UserRole.valueOf(dto.getRole().toUpperCase()));
+        usuario.setRole(UserRole.ADMIN);
         return usuario;
     }
 
-    // Conversão manual de Entidade → DTO
     private UsuarioResponseDTO toResponseDTO(Usuario usuario) {
         UsuarioResponseDTO dto = new UsuarioResponseDTO();
         dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
-        dto.setSenha(usuario.getSenha());
+        dto.setTelefone(usuario.getTelefone());
         return dto;
     }
 }

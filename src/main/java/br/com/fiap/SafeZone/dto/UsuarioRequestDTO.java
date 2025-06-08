@@ -20,8 +20,14 @@ public class UsuarioRequestDTO {
     @NotBlank(message = "A senha é obrigatória")
     private String senha;
 
-    @NotBlank(message = "A role é obrigatória")
-    private String role;
+
+    @Pattern(
+            regexp = "^(\\(?\\d{2}\\)?\\s?)?(9\\d{4})[- ]?(\\d{4})$",
+            message = "O telefone deve estar no formato (11) 91234-5678 ou 11912345678"
+    )
+    @NotBlank(message = "Telefone é obrigatório")
+    private String telefone;
+
 
     // Getters e Setters
     public String getEmail() {
@@ -40,12 +46,12 @@ public class UsuarioRequestDTO {
         this.senha = senha;
     }
 
-    public String getRole() {
-        return role;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public String getNome() {

@@ -1,8 +1,10 @@
 package br.com.fiap.SafeZone.controller;
 
-import br.com.fiap.SafeZone.model.Alerta;
+import br.com.fiap.SafeZone.dto.AlertaRequestDTO;
+import br.com.fiap.SafeZone.dto.AlertaResponseDTO;
 import br.com.fiap.SafeZone.service.AlertaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,34 +19,39 @@ public class AlertaController {
     @Autowired
     private AlertaService alertaService;
 
-    @Operation(summary = "Listar alertas com filtros", description = "Retorna uma lista paginada de alertas com filtros opcionais por cidade, região e nível")
+    @Operation(
+            summary = "Listar alertas com filtros",
+            description = "Filtra alertas por cidade, região e nível. Use paginação com ?page=0&size=10&sort=dataOcorrencia,desc"
+    )
     @GetMapping
-    public Page<Alerta> listarFiltrado(
+    public Page<AlertaResponseDTO> listarFiltrado(
             @RequestParam(required = false) String cidade,
             @RequestParam(required = false) String regiao,
             @RequestParam(required = false) String nivel,
-            Pageable pageable
+            @Parameter(hidden = true) Pageable pageable
     ) {
         return alertaService.listarFiltrado(cidade, regiao, nivel, pageable);
     }
 
     @Operation(summary = "Buscar alerta por ID", description = "Retorna os dados de um alerta específico pelo ID")
     @GetMapping("/{id}")
-    public Alerta buscarPorId(@PathVariable Long id) {
-        return alertaService.buscarPorId(id);
+    public AlertaResponseDTO buscarPorId(@PathVariable Long id) {
+        return alertaService.buscarDTO(id);
     }
 
-    @Operation(summary = "Criar novo alerta", description = "Cadastra um novo alerta com dados climáticos automáticos")
+    @Operation(summary = "Criar novo alerta", description = "Cadastra um novo alerta com dados climáticos automáticos e localização")
     @PostMapping
-    public Alerta salvar(@RequestBody Alerta alerta) {
-        return alertaService.salvar(alerta);
+    public AlertaResponseDTO salvar(@RequestBody AlertaRequestDTO dto) {
+        return alertaService.salvarDTO(dto);
     }
 
     @Operation(summary = "Atualizar alerta existente", description = "Atualiza os dados de um alerta já registrado")
     @PutMapping("/{id}")
-    public Alerta atualizar(@PathVariable Long id, @RequestBody Alerta alerta) {
-        alerta.setId(id);
-        return alertaService.salvar(alerta);
+    public AlertaResponseDTO atualizar(@PathVariable Long id, @RequestBody AlertaRequestDTO dto) {
+        dto.setLocalizacaoId(dto.getLocalizacaoId()); // opcional: reatribuindo por clareza
+        AlertaResponseDTO existente = alertaService.buscarDTO(id);
+        if (existente == null) return null;
+        return alertaService.salvarDTO(dto); // salvarDTO trata se é novo ou não
     }
 
     @Operation(summary = "Excluir alerta", description = "Remove um alerta pelo ID informado")
