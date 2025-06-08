@@ -123,11 +123,11 @@ http://localhost:8080/swagger-ui.html
 - `POST /localizacoes` → Cadastra uma nova localização
 ```json
 {
-  "cidade": "São Paulo",
-  "estado": "SP",
-  "bairro": "Centro",
-  "rua": "Rua A",
-  "cep": "01000-000"
+  "regiao": "Sul",
+  "endereco": "Rua XV de Novembro, 456",
+  "cidade": "Curitiba",
+  "estado": "PR",
+  "coordenadas": "-25.428954, -49.267137"
 }
 ```
 - `PUT /localizacoes/{id}` → Atualiza uma localização
@@ -140,13 +140,13 @@ http://localhost:8080/swagger-ui.html
 - `POST /areas-seguras` → Cadastra uma nova área segura
 ```json
 {
-  "nome": "Ginásio Central",
-  "endereco": "Rua Av. Central",
-  "responsavel": "Marco Aurelio",
-  "telefone": "11939807764",
-  "tipo": "GINASIO",
+  "nome": "Ginásio Poliesportivo Central",
+  "endereco": "Rua das Palmeiras, 123",
+  "responsavel": "Carlos Mendes",
+  "telefone": "11997776666",
   "capacidade": 300,
-  "localizacaoId": 1
+  "tipo": "GINASIO",
+  "localizacaoId": 2
 }
 ```
 - `PUT /areas-seguras/{id}` → Atualiza uma área segura existente
@@ -158,10 +158,11 @@ http://localhost:8080/swagger-ui.html
 - `POST /alertas` → Cadastra um novo alerta
 ```json
 {
-  "descricao": "Enchente detectada",
   "tipoDesastre": "ENCHENTE",
+  "descricao": "Nível do rio subindo rapidamente após chuvas intensas",
   "nivel": "ALTO",
-  "localizacaoId": 1
+  "localizacaoId": 2,
+  "dataOcorrencia": "2025-06-08T15:30:00"
 }
 ```
 - `DELETE /alertas/{id}` → Remove um alerta
