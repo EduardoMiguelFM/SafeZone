@@ -91,6 +91,15 @@ http://localhost:8080/swagger-ui.html
 
 ## 📌 Exemplos de Endpoints
 
+### 👤 LOGIN
+- `POST /auth/login` → Login com geração de token JWT
+```json
+{
+  "email": "SafeZoneAdm@safezone.com.br",
+  "senha": "SafeZone123"
+}
+```
+
 ### 👤 UsuarioController
 - `GET /usuarios` → Lista todos os usuários com paginação (Pageable)
 - `GET /usuarios/{id}` → Retorna os detalhes de um usuário pelo ID
