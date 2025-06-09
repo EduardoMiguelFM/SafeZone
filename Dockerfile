@@ -1,12 +1,11 @@
-# Etapa de build com Gradle e JDK 21
-FROM gradle:8.4-jdk21 AS builder
-WORKDIR /app
-COPY . .
-RUN gradle build -x test
+FROM openjdk:21-jdk-slim
 
-# Etapa de execução com Temurin JDK 21 (leve e confiável)
-FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
-COPY --from=builder /app/build/libs/*.jar app.jar
+
+COPY build/libs/SafeZone-0.0.1-SNAPSHOT.jar app.jar
+
+ENV JAVA_OPTS=""
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
