@@ -178,8 +178,8 @@ http://localhost:8080/swagger-ui.html
 
 | Tipo           | Link                |
 |----------------|---------------------|
-| 🎬 Demonstração da Solução | _(Inserir link do YouTube)_ |
-| 🗣️ Pitch (até 3 minutos)     | _(Inserir link do YouTube)_ |
+| 🎬 Demonstração da Solução |[ _(Video Demonstrando)_](https://youtu.be/nWsTCHr96GM) |
+| 🗣️ Pitch (até 3 minutos)     |[ _(Pitch)_](https://youtu.be/s8PfVH_Bmac) |
 
 ---
 
