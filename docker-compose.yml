@@ -1,0 +1,43 @@
+
+services:
+  db:
+    image: postgres:15
+    container_name: safezone_db
+    restart: always
+    environment:
+      POSTGRES_USER: safezone
+      POSTGRES_PASSWORD: safezone123
+      POSTGRES_DB: safezonedb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - safezone_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U safezone -d safezonedb"]
+      interval: 10s
+      retries: 5
+
+  app:
+    build: .
+    container_name: safezone_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/safezonedb
+      SPRING_DATASOURCE_USERNAME: safezone
+      SPRING_DATASOURCE_PASSWORD: safezone123
+    ports:
+      - "8080:8080"
+    networks:
+      - safezone_net
+    restart: always
+    user: "1000:1000" # usuário não-root para segurança
+
+volumes:
+  db_data:
+
+networks:
+  safezone_net:
