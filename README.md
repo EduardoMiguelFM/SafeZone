@@ -18,7 +18,6 @@ Auxiliar pessoas e instituições a gerenciar riscos em momentos de extrema urg�
 ## 🧱 Arquitetura e Organização do Projeto
 
 O projeto está organizado seguindo o padrão **Camadas**:
-```
 SafeZone  
 ├── controller             # Camada de Controllers (REST)  
 ├── dto                   # DTOs de entrada e saída  
@@ -27,7 +26,7 @@ SafeZone
 ├── service               # Lógica de negócio  
 ├── config                # Configurações como ModelMapper e Security  
 └── resources             # application.properties e migrations
-```
+
 ---
 
 ## ☁️ Integração com API Externa de Clima
@@ -75,16 +74,14 @@ Essas visualizações são integradas ao sistema por meio de endpoints específi
 git clone https://github.com/seu-usuario/SafeZone.git  
 cd SafeZone
 
-2. **Configure o banco PostgreSQL no `application.properties`**
-```
+2. **Configure o banco PostgreSQL no `application.properties` (se rodar sem Docker)**
 spring.datasource.url=jdbc:postgresql://localhost:5432/safezone
 spring.datasource.username=postgres
 spring.datasource.password=dudu0602
-```
 
-4. **Rode a aplicação**
+3. **Rode a aplicação**
 
-5. **Acesse a documentação Swagger**
+4. **Acesse a documentação Swagger**
 http://localhost:8080/swagger-ui.html
 
 ---
@@ -92,85 +89,40 @@ http://localhost:8080/swagger-ui.html
 ## 📌 Exemplos de Endpoints
 
 ### 👤 LOGIN
-- `POST /auth/login` → Login com geração de token JWT
-```json
+- POST /auth/login → Login com geração de token JWT
 {
   "email": "SafeZoneAdm@safezone.com.br",
   "senha": "SafeZone123"
 }
-```
 
 ### 👤 UsuarioController
-- `GET /usuarios` → Lista todos os usuários com paginação (Pageable)
-- `GET /usuarios/{id}` → Retorna os detalhes de um usuário pelo ID
-- `GET /usuarios/email/{email}` → Busca usuário pelo e-mail
-- `GET /usuarios/filtro?nome=joao` → Filtra usuários por nome (parcial)
-- `POST /usuarios` → Cadastra um novo usuário
-```json
-{
-  "nome": "Maria Eduarda",
-  "email": "madu@email.com",
-  "senha": "Senha123",
-  "telefone": "11999887766"
-}
-```
-- `PUT /usuarios/{id}` → Atualiza um usuário existente
-- `DELETE /usuarios/{id}` → Remove um usuário
+- GET /usuarios → Lista todos os usuários com paginação
+- GET /usuarios/{id} → Retorna os detalhes de um usuário pelo ID
+- POST /usuarios → Cadastra um novo usuário
+- PUT /usuarios/{id} → Atualiza um usuário existente
+- DELETE /usuarios/{id} → Remove um usuário
 
 ### 📍 LocalizacaoController
-- `GET /localizacoes` → Lista todas as localizações com paginação
-- `GET /localizacoes/{id}` → Retorna os detalhes de uma localização pelo ID
-- `POST /localizacoes` → Cadastra uma nova localização
-```json
-{
-  "regiao": "Sul",
-  "endereco": "Rua XV de Novembro, 456",
-  "cidade": "Curitiba",
-  "estado": "PR",
-  "coordenadas": "-25.428954, -49.267137"
-}
-```
-- `PUT /localizacoes/{id}` → Atualiza uma localização
-- `DELETE /localizacoes/{id}` → Remove uma localização
+- GET /localizacoes → Lista todas as localizações
+- POST /localizacoes → Cadastra uma nova localização
+- PUT /localizacoes/{id} → Atualiza uma localização
+- DELETE /localizacoes/{id} → Remove uma localização
 
 ### 🛟 AreaSeguraController
-- `GET /areas-seguras` → Lista áreas seguras com paginação e filtros por cidade, estado, tipo e capacidade mínima
-  - Exemplo: `GET /areas-seguras?cidade=Guarulhos&estado=SP&tipo=GINASIO&capacidadeMin=100`
-- `GET /areas-seguras/{id}` → Retorna os detalhes de uma área segura pelo ID
-- `POST /areas-seguras` → Cadastra uma nova área segura
-```json
-{
-  "nome": "Ginásio Poliesportivo Central",
-  "endereco": "Rua das Palmeiras, 123",
-  "responsavel": "Carlos Mendes",
-  "telefone": "11997776666",
-  "capacidade": 300,
-  "tipo": "GINASIO",
-  "localizacaoId": 2
-}
-```
-- `PUT /areas-seguras/{id}` → Atualiza uma área segura existente
-- `DELETE /areas-seguras/{id}` → Remove uma área segura
+- GET /areas-seguras → Lista áreas seguras
+- POST /areas-seguras → Cadastra uma nova área segura
+- PUT /areas-seguras/{id} → Atualiza uma área segura
+- DELETE /areas-seguras/{id} → Remove uma área segura
 
 ### 🔔 AlertaController
-- `GET /alertas` → Lista todos os alertas com paginação
-- `GET /alertas/{id}` → Retorna os detalhes de um alerta por ID
-- `POST /alertas` → Cadastra um novo alerta
-```json
-{
-  "tipoDesastre": "ENCHENTE",
-  "descricao": "Nível do rio subindo rapidamente após chuvas intensas",
-  "nivel": "ALTO",
-  "localizacaoId": 2,
-  "dataOcorrencia": "2025-06-08T15:30:00"
-}
-```
-- `DELETE /alertas/{id}` → Remove um alerta
+- GET /alertas → Lista todos os alertas
+- POST /alertas → Cadastra um novo alerta
+- DELETE /alertas/{id} → Remove um alerta
 
 ### 📊 EstatisticaController
-- `GET /estatisticas/quantidade-alertas` → Retorna total de alertas por tipo
-- `GET /estatisticas/media-temperatura` → Retorna média de temperatura dos alertas
-- `GET /estatisticas/usuarios-ativos` → Retorna usuários com mais alertas registrados
+- GET /estatisticas/quantidade-alertas → Retorna total de alertas por tipo
+- GET /estatisticas/media-temperatura → Retorna média de temperatura dos alertas
+- GET /estatisticas/usuarios-ativos → Retorna usuários com mais alertas registrados
 
 ---
 
@@ -188,3 +140,96 @@ http://localhost:8080/swagger-ui.html
 - Eduardo Miguel Forato Monteiro – RM 555871
 - Cícero Gabriel Oliveira Serafim – RM 556996
 - Alice Teixeira Caldeira - RM 556293
+
+---
+
+## 🐳 Docker e Docker Compose
+
+A aplicação SafeZone foi containerizada utilizando Docker e Docker Compose, garantindo ambientes padronizados e reprodutíveis, além de simplificar o deploy.
+
+### 🔹 Pré-requisitos
+- Docker Desktop (Windows/Mac) ou Docker Engine (Linux)
+- Docker Compose V2 (já incluído no Docker Desktop)
+
+Verifique se está instalado:
+docker --version
+docker compose version
+
+### 🔹 Como rodar com Docker Compose
+1. Clone o projeto
+git clone https://github.com/seu-usuario/SafeZone.git
+cd SafeZone
+
+2. Suba os containers
+docker compose up -d --build
+
+3. Verifique se os serviços estão rodando
+docker ps
+👉 Deve aparecer:
+- safezone_app (Spring Boot)
+- safezone_db (PostgreSQL)
+
+4. Acesse a aplicação
+- API: http://localhost:8080
+- Swagger: http://localhost:8080/swagger-ui.html
+
+5. Derrube os containers
+docker compose down
+
+---
+
+### 🔹 Estrutura do docker-compose.yml
+services:
+  db:
+    image: postgres:15
+    container_name: safezone_db
+    restart: always
+    environment:
+      POSTGRES_USER: safezone
+      POSTGRES_PASSWORD: safezone123
+      POSTGRES_DB: safezonedb
+    ports:
+      - "5433:5432"
+    networks:
+      - safezone_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U safezone -d safezonedb"]
+      interval: 10s
+      retries: 5
+
+  app:
+    build: .
+    container_name: safezone_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/safezonedb
+      SPRING_DATASOURCE_USERNAME: safezone
+      SPRING_DATASOURCE_PASSWORD: safezone123
+    ports:
+      - "8080:8080"
+    networks:
+      - safezone_net
+    restart: always
+    user: "1000:1000"
+
+volumes:
+  db_data:
+
+networks:
+  safezone_net:
+
+---
+
+### 🔹 Troubleshooting
+- ❌ Erro: porta 5432 já está em uso  
+  👉 Pare outros Postgres locais ou altere a porta no docker-compose.yml.
+
+- ❌ Banco não sobe  
+  👉 Confira logs:
+  docker logs safezone_db
+
+- ❌ Aplicação não conecta no banco  
+  👉 Certifique-se que a URL no application.properties usa db como host:
+  spring.datasource.url=jdbc:postgresql://db:5432/safezonedb
